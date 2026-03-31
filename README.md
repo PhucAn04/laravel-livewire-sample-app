@@ -81,5 +81,3 @@ exit
   - Tại đây, hãy nhập **email** và **password** (được cung cấp từ seeder dữ liệu sẵn) để truy cập trang Dashboard.
   - (Nếu dữ liệu mẫu không tồn tại, bạn có thể tự tạo tài khoản admin nhanh chóng bằng lệnh `php artisan make:filament-user` bên trong container PHP).
 
----
-*Cấu trúc trên được tạo bởi trợ lý ảo nhằm giúp nhà phát triển dễ dàng nắm bắt tổng quan về hệ thống.*
