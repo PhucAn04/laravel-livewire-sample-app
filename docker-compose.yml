@@ -10,6 +10,8 @@ services:
     working_dir: /var/www
     volumes:
       - ./src:/var/www
+      - /var/www/vendor
+      - /var/www/node_modules
     depends_on:
       - db
 
@@ -22,6 +24,8 @@ services:
     volumes:
       - ./:/var/www
       - ./docker/nginx:/etc/nginx/conf.d
+      - /var/www/src/vendor
+      - /var/www/src/node_modules
     depends_on:
       - app
 
