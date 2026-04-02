@@ -14,8 +14,12 @@ RUN apt-get update && apt-get install -y \
         bcmath \
         zip \
         intl \
+        opcache \
     && pecl install redis \
     && docker-php-ext-enable redis
+
+# Setup OPcache configurations
+COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache-custom.ini
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
