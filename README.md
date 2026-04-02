@@ -59,32 +59,39 @@ cd ..
 docker compose up -d --build
 ```
 
-**Bước 3:** Cài đặt thư viện (PHP + Node.js) và cấu hình Laravel
-Sử dụng docker exec để truy cập vào container chạy PHP (ví dụ container có tên service là `php`):
+**Bước 3:** Truy cập vào container PHP
+Sử dụng lệnh sau để truy cập vào shell của container:
 ```bash
-docker compose exec php bash
-
-# Bên trong container PHP, hãy chạy lần lượt các lệnh:
-composer install
-php artisan key:generate
-php artisan migrate --seed
-npm install
-npm run build
-
-# Thoát ra môi trường máy host
-exit
+docker exec -it laravel_app bash
 ```
 
-**Bước 4:** Truy cập ứng dụng & Đăng nhập Admin Panel
-- **Giao diện người dùng**: Chạy tại địa chỉ `http://localhost:8000` (hoặc cổng được ánh xạ theo cấu hình Docker).
-- **Trang Quản Trị (Filament Dashboard)**: Truy cập vào đường dẫn `http://localhost:8000/admin/login`.
-  - Bạn có thể tạo tài khoản admin thủ công bằng cách truy cập Tinker trong container ứng dụng bằng lệnh:
-    ```bash
-    docker exec -it laravel_app php artisan tinker
-    ```
-  - Sau đó, dán dòng mã sau để tạo tài khoản admin (Email: `admin@admin.com` - Password: `admin`):
-    ```php
-    App\Models\User::updateOrCreate(['email' => 'admin@admin.com'], ['name' => 'Admin', 'password' => Hash::make('admin')]);
-    ```
-  - Cuối cùng, sử dụng email và password trên để đăng nhập vào trang quản trị Filament.
+**Bước 4:** Cài đặt các thư viện và cấu hình ban đầu
+Khi đã vào môi trường dòng lệnh của container, hãy chạy lần lượt các lệnh dưới đây:
+```bash
+composer install
+php artisan key:generate
+php artisan migrate
+npm install
+npm run build
+```
+
+**Bước 5:** Tạo tài khoản Admin thủ công
+Tiếp tục trong container, sử dụng tiện ích Tinker để thiết lập tài khoản quản trị:
+```bash
+php artisan tinker
+```
+Dán đoạn mã PHP sau vào Tinker để tạo tài khoản (với Email: `admin@admin.com` và Password: `admin`):
+```php
+App\Models\User::updateOrCreate(
+    ['email' => 'admin@admin.com'], 
+    ['name' => 'Admin', 'password' => Hash::make('admin')]
+);
+```
+Nhập `exit` (hoặc nhấn `Ctrl + C`) để thoát khỏi Tinker, sau đó gõ `exit` một lần nữa để thoát hẳn khỏi container.
+
+**Bước 6:** Truy cập và đăng nhập ứng dụng
+- **Giao diện người dùng**: Khởi chạy trên trình duyệt theo địa chỉ `http://localhost:8000`.
+- **Trang Quản Trị (Filament)**: Truy cập vào hướng dẫn `http://localhost:8000/admin/login` và đăng nhập bằng thông tin vừa tạo:
+  - **Email:** `admin@admin.com`
+  - **Password:** `admin`
 
