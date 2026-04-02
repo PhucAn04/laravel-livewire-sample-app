@@ -77,7 +77,14 @@ exit
 
 **Bước 4:** Truy cập ứng dụng & Đăng nhập Admin Panel
 - **Giao diện người dùng**: Chạy tại địa chỉ `http://localhost:8000` (hoặc cổng được ánh xạ theo cấu hình Docker).
-- **Trang Quản Trị (Filament Dashboard)**: Truy cập vào đường dẫn `http://localhost:8000/admin/login`. 
-  - Tại đây, hãy nhập **email** và **password** (được cung cấp từ seeder dữ liệu sẵn) để truy cập trang Dashboard.
-  - (Nếu dữ liệu mẫu không tồn tại, bạn có thể tự tạo tài khoản admin nhanh chóng bằng lệnh `php artisan make:filament-user` bên trong container PHP).
+- **Trang Quản Trị (Filament Dashboard)**: Truy cập vào đường dẫn `http://localhost:8000/admin/login`.
+  - Bạn có thể tạo tài khoản admin thủ công bằng cách truy cập Tinker trong container ứng dụng bằng lệnh:
+    ```bash
+    docker exec -it laravel_app php artisan tinker
+    ```
+  - Sau đó, dán dòng mã sau để tạo tài khoản admin (Email: `admin@admin.com` - Password: `admin`):
+    ```php
+    App\Models\User::updateOrCreate(['email' => 'admin@admin.com'], ['name' => 'Admin', 'password' => Hash::make('admin')]);
+    ```
+  - Cuối cùng, sử dụng email và password trên để đăng nhập vào trang quản trị Filament.
 
