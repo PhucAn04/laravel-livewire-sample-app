@@ -15,6 +15,8 @@ RUN apt-get update && apt-get install -y \
         zip \
         intl \
         opcache \
+        pcntl \
+        posix \
     && pecl install redis \
     && docker-php-ext-enable redis
 

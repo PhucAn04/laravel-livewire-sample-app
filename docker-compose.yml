@@ -10,8 +10,8 @@ services:
     working_dir: /var/www
     volumes:
       - ./src:/var/www
-      - /var/www/vendor
-      - /var/www/node_modules
+      - vendor_data:/var/www/vendor
+      - node_modules_data:/var/www/node_modules
     depends_on:
       - db
 
@@ -28,6 +28,22 @@ services:
       - /var/www/src/node_modules
     depends_on:
       - app
+
+  horizon:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: laravel_horizon
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./src:/var/www
+      - vendor_data:/var/www/vendor
+      - node_modules_data:/var/www/node_modules
+    command: php artisan horizon
+    depends_on:
+      - db
+      - redis
 
   db:
     image: postgres:15
@@ -51,3 +67,5 @@ services:
 
 volumes:
   pgdata:
+  vendor_data:
+  node_modules_data:
